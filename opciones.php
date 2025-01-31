@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Opciones - Alumnos</title>
     <!-- Link al CSS de Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
 </head>
 <body>
@@ -20,7 +21,7 @@
             <div class="card-body">
                 <!-- Botón Alumnos -->
                 <div class="mb-3">
-                    <a href="leerTodos.php" class="btn btn-primary">Alumnos</a>
+                    <a href="filtroTodos.php" class="btn btn-primary">Alumnos</a>
                 </div>
                 
                 <!-- Formulario Ver Alumnos -->
@@ -31,12 +32,37 @@
                     </div>
                     <button type="submit" class="btn btn-success">Ver</button>
                 </form>
+                <!-- Formulario Ver Edad -->
+                <form action="leerFiltro.php" method="POST">
+                    <div class="mb-3">
+                        <label for="edadAlumno" class="form-label">Ver alumnos cuya edad sea:</label>
+                        <input type="text" class="form-control" id="edadAlumno" name="edad" placeholder="Introduce la edad del alumno" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Ver</button>
+                </form>
+                <!-- Formulario Ver Curso -->
+                <form action="leerFiltro.php" method="POST">
+                    <div class="mb-3">
+                        <label for="cursoAlumno" class="form-label">Ver alumnos cuyo curso sea:</label>
+                        <input type="text" class="form-control" id="cursoAlumno" name="curso" placeholder="Introduce el curso del alumno" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Ver</button>
+                </form>
+                <!-- Formulario Ver Promociona -->
+                <form action="leerFiltro.php" method="POST">
+                    <div class="mb-3">
+                        <label for="promocionaAlumno" class="form-label">Ver alumnos por promociona:</label>
+                        <br />
+                        <select name="promociona" id="promocionaAlumno">
+                            <option disabled selected>Selecciona una opcion</option>
+                            <option value="0">No</option>
+                            <option value="1">Si</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Ver</button>
+                </form>
             </div>
         </div>
     </div>
-
-    <!-- Scripts de Bootstrap -->
-     <!-- Agregar el script de Bootstrap 5 desde el CDN al final del body -->
-     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

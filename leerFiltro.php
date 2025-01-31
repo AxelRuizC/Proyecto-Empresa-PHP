@@ -10,7 +10,8 @@ include('conexion.php');
     <title>Listado de Estudiantes filtrado por nombre</title>
     
     <!-- Link al CSS de Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container mt-4">
@@ -20,12 +21,28 @@ include('conexion.php');
 <?php
 
 // Verificar si se ha enviado el formulario por POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['nombre']) && !empty($_POST['nombre'])) {
-        $nombre = $_POST['nombre'];
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['nombre']) && !empty($_POST['nombre'])){
+            $nombre = $_POST['nombre'];
+            $query = "SELECT id, nombre, edad, curso, promociona FROM alumnos WHERE nombre LIKE '$nombre';";}
+        // Comprobación de la edad
+        elseif (isset($_POST['edad']) && !empty($_POST['edad'])){
+            $edad = $_POST['edad'];
+            $query = "SELECT id, nombre, edad, curso, promociona FROM alumnos WHERE edad = '$edad';";}
+        // Comprobación del curso
+        elseif (isset($_POST['curso']) && !empty($_POST['curso'])) {
+            $curso = $_POST['curso'];
+            $query = "SELECT id, nombre, edad, curso, promociona FROM alumnos WHERE curso LIKE '$curso';";}
+        // Comprobación del promociona
+        elseif (isset($_POST['promociona']) && !empty($_POST['promociona'])) {
+            $promociona = $_POST['promociona'];
+            $query = "SELECT id, nombre, edad, curso, promociona FROM alumnos WHERE promociona = '$promociona';";}
+        else {
+                echo "<div class='container mt-4'>
+                        <h2>Datos proporcionados incorrectos</h2>
+                      </div>";
+        }
 
-        // Consultar los datos de la base de datos filtrados por nombre
-        $query = "SELECT id, nombre, edad, curso, promociona FROM alumnos WHERE nombre LIKE '%$nombre%'";
         $resultado = mysqli_query($conexion, $query);
 
         // Verificar si la consulta fue exitosa
@@ -41,11 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
             <div class="card-body">
                 <div class="mb-3">
-                    <a href="#.php" class="btn btn-primary">Introducir alumnos</a>
+                    <a href="introducirDatos.php" class="btn btn-primary">Introducir alumnos</a>
                 </div>
 
                 <div class="mb-3">
-                    <a href="leerTodos.php" class="btn btn-primary">Ver alumnos</a>
+                    <a href="filtroTodos.php" class="btn btn-primary">Ver alumnos</a>
                 </div>
 
                 <div class="mb-3">
@@ -57,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Mostrar los resultados en formato de tabla
         echo "<div class='container mt-4'>
-                <h2>Resultados para: " . htmlspecialchars($nombre) . "</h2>
+                <h2>Resultados: </h2>
                 <table class='table table-bordered table-striped'>
                     <thead class='thead-dark'>
                         <tr>
@@ -81,21 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </tr>";
         }
 
-        echo "</tbody></table></div>";
+        echo "</tbody></table> <h1>'$promociona'</h1></div>";
     } else {
-        echo "<div class='container mt-4'>
-                <h2>No se proporcionó un nombre para la búsqueda</h2>
-              </div>";
-    }
-} else {
     echo "<div class='container mt-4'>
             <h2>Acceso no permitido. El formulario debe enviarse mediante POST.</h2>
           </div>";
 }
 
 ?>
-<!-- Scripts de Bootstrap -->
-     <!-- Agregar el script de Bootstrap 5 desde el CDN al final del body -->
-     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
