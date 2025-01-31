@@ -53,8 +53,8 @@
                     <div class="mb-3">
                         <label for="promocionaAlumno" class="form-label">Ver alumnos por promociona:</label>
                         <br />
-                        <select name="promociona" id="promocionaAlumno">
-                            <option disabled selected>Selecciona una opcion</option>
+                        <select name="promociona" id="promocionaAlumno" required>
+                            <option disabled selected value="">Selecciona una opcion</option>
                             <option value="0">No</option>
                             <option value="1">Si</option>
                         </select>

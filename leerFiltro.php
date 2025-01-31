@@ -34,7 +34,7 @@ include('conexion.php');
             $curso = $_POST['curso'];
             $query = "SELECT id, nombre, edad, curso, promociona FROM alumnos WHERE curso LIKE '$curso';";}
         // Comprobación del promociona
-        elseif (isset($_POST['promociona']) && !empty($_POST['promociona'])) {
+        elseif (isset($_POST['promociona'])) {
             $promociona = $_POST['promociona'];
             $query = "SELECT id, nombre, edad, curso, promociona FROM alumnos WHERE promociona = '$promociona';";}
         else {
