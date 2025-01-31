@@ -14,7 +14,7 @@ echo "<table border='1'>
 
 // Recorrer cada fila de resultados y mostrarla
 while ($row = mysqli_fetch_assoc($resultado)) {
-        if($row['edad'] > $_GET["edad"]){
+        if($row['edad'] > $_POST["edad"]){
             echo "<tr>
                     <td>" . $row['id'] . "</td>
                     <td>" . $row['nombre'] . "</td>

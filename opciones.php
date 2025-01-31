@@ -1,32 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leer Datos PHP</title>
-    <link rel="stylesheet" href="css/stylesheet.css">
+    <title>Opciones - Alumnos</title>
+    <!-- Link al CSS de Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
 </head>
-
 <body>
-    <section class="contenedor">
-        <h1>Leer Datos:</h1>
-        <form action="filtroTodos.php">
-            <h3>Ver todos los alumnos ==> <button type="submit">Ver</button> </h3>
-        </form>
+    <div class="container mt-5">
+        <h1>Opciones de Lectura de Datos</h1>
+        
+        <!-- Sección Leer Datos -->
+        <div class="card my-4">
+            <div class="card-header">
+                <h3>Leer Datos</h3>
+            </div>
+            <div class="card-body">
+                <!-- Botón Alumnos -->
+                <div class="mb-3">
+                    <a href="leerTodos.php" class="btn btn-primary">Alumnos</a>
+                </div>
+                
+                <!-- Formulario Ver Alumnos -->
+                <form action="leerFiltro.php" method="POST">
+                    <div class="mb-3">
+                        <label for="nombreAlumno" class="form-label">Ver alumnos cuyo nombre sea:</label>
+                        <input type="text" class="form-control" id="nombreAlumno" name="nombre" placeholder="Introduce el nombre del alumno" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Ver</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-
-        <h2>Filtros</h2>
-        <form action="filtroNombre.php" method="GET">
-            <h4>Por nombre: <input type="text" name="nombre" id="nombreAlumno"></input> <button type="submit">ver</button> </h4>
-        </form>
-        <form action="filtroEdad.php" method="GET">
-            <h4>Por edad > a: <input type="text" name="edad" id="edadAlumno"></input> <button type="submit">ver</button> </h4>
-        </form>
-        <form action="filtroPromociona.php" method="GET">
-            <h4>Por promociona: <input type="text" name="promociona" id="prmocionaAlumno"></input> <button type="submit">ver</button> </h4>
-        </form>
-    </section>
+    <!-- Scripts de Bootstrap -->
+     <!-- Agregar el script de Bootstrap 5 desde el CDN al final del body -->
+     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

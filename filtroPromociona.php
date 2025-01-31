@@ -14,7 +14,7 @@ echo "<table border='1'>
 
 // Recorrer cada fila de resultados y mostrarla
 while ($row = mysqli_fetch_assoc($resultado)) {
-        if($row['promociona'] == $_GET["promociona"]){
+        if($row['promociona'] == $_POST["promociona"]){
             echo "<tr>
                     <td>" . $row['id'] . "</td>
                     <td>" . $row['nombre'] . "</td>
