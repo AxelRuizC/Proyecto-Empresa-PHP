@@ -1,4 +1,4 @@
-<?php
+ <?php
 // Incluir el archivo de conexión (si es necesario)
 include('conexion.php');
 ?>
