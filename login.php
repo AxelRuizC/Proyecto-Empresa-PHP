@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 include("conexion.php");
 
 $error = "";
@@ -13,12 +14,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($resultado && mysqli_num_rows($resultado) > 0) {
         $datos = mysqli_fetch_assoc($resultado);
-        $passwdTemp = $datos["contrasena"];
+        $passwdTemp = $datos["passwd"];
 
-        if (password_verify($passwd, $passwdTemp)) {
-            //Condicional para enviar a pagina de admin o normal
-            header("Location: inicio.php");
-            exit();
+        if ($passwd == $passwdTemp) {
+
+            $query = "SELECT t.* FROM cuentas AS c, trabajadores AS t 
+                        WHERE c.id_trabajador = t.id AND c.user = '$user'";
+            $resultado = mysqli_query($conexion, $query);
+            $datos = mysqli_fetch_assoc($resultado);
+
+            $_SESSION["nombre"] = $datos["nombre"];
+
+            if($datos["id_tipo"] == 1){
+                header("Location: inicioAdmin.php");
+                die();
+            } elseif($datos["id_tipo"] == 0){
+                header("Location: inicioNormal.php");
+                die();
+            } else{
+                $error = "Sin puesto asignado";
+            }
+            
         } else {
             $error = "Contraseña incorrecta.";
         }
@@ -27,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-mysqli_close($conexion);
 ?>
 
 <!DOCTYPE html>
@@ -37,21 +52,21 @@ mysqli_close($conexion);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/stylesheet.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body>
     
     <div class="contenedor">
-        <form action="inicio.php" method="POST">
+        <form action="" method="POST">
             <h1>Login</h1>
             <div class="input-box">
                 <input type="text" name="user" placeholder="Usuario" required>
-                <i class='bx bxs-user'></i>
+                <i class="bx bxs-user"></i>
             </div>
             <div class="input-box">
                 <input type="password" name="passwd" placeholder="Contraseña" required>
-                <i class='bx bxs-lock-alt' ></i>
+                <i class="bx bxs-lock-alt" ></i>
             </div>  
 
             <div class="olvido-contra">
@@ -61,13 +76,14 @@ mysqli_close($conexion);
 
             <button type="submit" class="btn">Login</button>
 
-            <?php if ($error): 
-                echo "<p style='color: red;'><?= $error ?></p>";
-            endif; 
-            ?>
+            <?php if ($error): ?>
+                <p style='color: red;'><?php echo $error; ?></p>
+            <?php endif; ?>
 
         </form>
     </div>
 
 </body>
 </html>
+
+
