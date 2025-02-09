@@ -3,11 +3,14 @@
 session_start();
 include('conexion.php');
 
+$verificado = $_SESSION["verificado"];
+
+if (!$verificado) {
+    die("<h1> Acceso no permitido, debes iniciar sesion primero </h1>");
+}
+
 $nombre = $_SESSION["nombre"];
 
-$query = "SELECT DATE_FORMAT(CURRENT_DATE, '%d-%m-%Y') AS dia_actual;";
-$resultado = mysqli_query($conexion, $query);
-$datos = mysqli_fetch_assoc($resultado);
 
 ?>
 
@@ -37,51 +40,83 @@ $datos = mysqli_fetch_assoc($resultado);
         <main class="contenido-principal">
             <header>
                 <h1>Bienvenid@ <?php echo htmlspecialchars($nombre); ?></h1>
-                <p><?php echo $datos["dia_actual"] ?></p>
+                <p>
+                    <?php 
+                        $query = "SELECT DATE_FORMAT(CURRENT_DATE, '%d-%m-%Y') AS dia_actual;";
+                        $resultado = mysqli_query($conexion, $query);
+                        $datos = mysqli_fetch_assoc($resultado);
+
+                        echo $datos["dia_actual"] 
+                    ?>
+                </p>
             </header>
 
             <section class="stats">
                 <div class="card">
                     <h3>Ventas Totales</h3>
-                    <p>25200</p>
+                    <p>
+                        <?php
+                            $query = "SELECT COUNT(*) AS ventas_totales FROM ventas;";
+                            $resultado = mysqli_query($conexion, $query);
+                            $datos = mysqli_fetch_assoc($resultado);
+
+                            echo $datos["ventas_totales"] 
+                        ?>
+                    </p>
                 </div>
                 <div class="card">
                     <h3>Nº de Clientes</h3>
-                    <p>123141</p>
+                    <p>
+                        <?php
+                            $query = "SELECT COUNT(*) AS cantidad_cli FROM clientes;";
+                            $resultado = mysqli_query($conexion, $query);
+                            $datos = mysqli_fetch_assoc($resultado);
+
+                            echo $datos["cantidad_cli"] 
+                        ?>
+                    </p>
                 </div>
                 <div class="card">
                     <h3>Ganancias Totales</h3>
-                    <p>$10,865</p>
+                    <p>
+                        <?php
+                            $query = "SELECT SUM(monto) AS ganancia_total FROM ventas;";
+                            $resultado = mysqli_query($conexion, $query);
+                            $datos = mysqli_fetch_assoc($resultado);
+
+                            echo $datos["ganancia_total"] . " €";
+                        ?>
+                    </p>
                 </div>
             </section>
 
             <section class="orders">
                 <h2>Ventas Recientes</h2>
                 <table>
-                    <tr>
+                    <thead>
                         <th>Producto</th>
                         <th>ID Venta</th>
                         <th>Pago</th>
                         <th>Monto</th>
-                    </tr>
-                    <tr>
-                        <td>Google Pixel</td>
-                        <td>858687</td>
-                        <td>Transferencia</td>
-                        <td>523 €</td>
-                    </tr>
-                    <tr>
-                        <td>Iphone 15 pro</td>
-                        <td>122322</td>
-                        <td>Efectivo</td>
-                        <td>1642 €</td>
-                    </tr>
-                    <tr>
-                        <td>Samsung Galaxy S21</td>
-                        <td>455645</td>
-                        <td>Tarjeta</td>
-                        <td>1300 €</td>
-                    </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $query = "SELECT v.nombre AS nombre, v.id_venta AS id, tp.nombre AS tipo, v.monto AS monto 
+                                        FROM ventas AS v, tipo_pago AS tp
+                                        WHERE v.id_tipo_pago = tp.id
+                                        ORDER BY fecha DESC
+                                        LIMIT 5;";
+                            $resultado = mysqli_query($conexion, $query);
+                            while ($row = mysqli_fetch_assoc($resultado)){
+                                echo "<tr>
+                                        <td>" . $row['nombre'] . "</td>
+                                        <td>" . $row['id'] . "</td>
+                                        <td>" . $row['tipo'] . "</td>
+                                        <td>" . $row['monto'] . " €</td>
+                                    </tr>";
+                            }
+                        ?>
+                    </tbody>
                 </table>
             </section>
 

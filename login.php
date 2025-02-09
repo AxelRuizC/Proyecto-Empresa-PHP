@@ -4,6 +4,7 @@ session_start();
 include("conexion.php");
 
 $error = "";
+$verificado = "FALSE";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = mysqli_real_escape_string($conexion, $_POST["user"]);
@@ -22,8 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         WHERE c.id_trabajador = t.id AND c.user = '$user'";
             $resultado = mysqli_query($conexion, $query);
             $datos = mysqli_fetch_assoc($resultado);
+            $verificado = "TRUE";
 
             $_SESSION["nombre"] = $datos["nombre"];
+            $_SESSION["verificado"] = $verificado;
 
             if($datos["id_tipo"] == 1){
                 header("Location: inicioAdmin.php");
