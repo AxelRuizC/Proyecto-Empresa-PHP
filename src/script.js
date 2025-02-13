@@ -29,4 +29,52 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
+
+    // Agregar Venta
+    let btnAgregar = document.querySelector(".abrirAgregar");
+    if (btnAgregar) {
+        btnAgregar.addEventListener("click", abrirAgregar);
+    }
+
+    // Eliminar Venta
+    let btnEliminar = document.querySelector(".abrirEliminar");
+    if (btnEliminar) {
+        btnEliminar.addEventListener("click", abrirEliminar);
+    }
+
+    let btnModificar = document.querySelector(".abrirModificar");
+    if (btnModificar) {
+        btnModificar.addEventListener("click", abrirModificar);
+    }
 });
+
+function abrirAgregar() {
+    let form = document.getElementById("formAgregar");
+    if (form) {
+        form.style.display = "block";
+    }
+}
+
+function abrirEliminar() {
+    let form = document.getElementById("formEliminar");
+    if (form) {
+        form.style.display = "block";
+    }
+}
+
+function abrirModificar() {
+    let form = document.getElementById("formModificar");
+    if (form) {
+        form.style.display = "block";
+    }
+}
+    
+function closeForm(formId) {
+    let form = document.getElementById(formId);
+    if (form) {
+        form.style.display = "none";
+    } 
+};
+
+
+

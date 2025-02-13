@@ -29,7 +29,6 @@ $nombre = $_SESSION["nombre"];
     <div class="contenedor">
 
         <aside class="sidebar">
-            <img src="src/logo.png" alt="logo de la empresa" class="logo-empresa">
             <h2>Global Inc.</h2>
             <ul>
                 <li><a href="inicioNormal.php"><i class="ri-dashboard-line"></i> Dashboard</a></li>
@@ -105,7 +104,7 @@ $nombre = $_SESSION["nombre"];
                             $query = "SELECT v.nombre AS nombre, v.id_venta AS id, tp.nombre AS tipo, v.monto AS monto 
                                         FROM ventas AS v, tipo_pago AS tp
                                         WHERE v.id_tipo_pago = tp.id
-                                        ORDER BY id DESC
+                                        ORDER BY fecha DESC
                                         LIMIT 5;";
                             $resultado = mysqli_query($conexion, $query);
                             while ($row = mysqli_fetch_assoc($resultado)){

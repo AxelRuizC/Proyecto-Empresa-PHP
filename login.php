@@ -2,6 +2,7 @@
 
 session_start();
 include("conexion.php");
+error_reporting(0);
 
 $error = "";
 $verificado = "FALSE";
