@@ -32,9 +32,9 @@ $nombre = $_SESSION["nombre"];
             <img src="src/logo.png" alt="logo de la empresa" class="logo-empresa">
             <h2>Global Inc.</h2>
             <ul>
-                <li><a href="inicioNormal.php"><i class="ri-dashboard-line"></i> Dashboard</a></li>
-                <li><a href="clientes.php"><i class="ri-user-line"></i> Clientes</a></li>
-                <li><a href="ventas.php"><i class="ri-cash-line"></i> Ventas</a></li>
+                <li><i class="ri-dashboard-line"></i><a href="inicioNormal.php"> Dashboard</a></li>
+                <li><i class="ri-user-line"></i><a href="clientes.php"> Clientes</a></li>
+                <li><i class="ri-cash-line"></i><a href="ventas.php"> Ventas</a></li>
             </ul>
         </aside>
 
@@ -121,13 +121,7 @@ $nombre = $_SESSION["nombre"];
                 </table>
             </section>
 
-            <section class="tasks">
-                <h2>Tareas</h2>
-                <button class="add-task">+ Añadir Tarea</button>
-            </section>
         </main>
     </div>
-<script src="src/script.js"></script>
-    
 </body>
 </html>
