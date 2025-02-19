@@ -3,16 +3,57 @@
 session_start();
 include('conexion.php');
 
-$verificado = $_SESSION["verificado"];
+@$verificado = $_SESSION["verificado"];
 
 if (!$verificado) {
-    die("<h1> Acceso no permitido, debes iniciar sesion primero </h1>");
+    header("Location: login.php");
+    die();
 }
 
 $nombre = $_SESSION["nombre"];
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introducir.php por llamada POST
+    
+    if (isset($_POST['form_id'])) {
+        $form_id = $_POST['form_id'];
 
-if (isset($_GET['form_id'])) {
+        if ($form_id == 'form1') {
+            if (isset($_POST['id_cliente']) && !empty($_POST['id_cliente'])) {
+                $id_cliente = $_POST['id_cliente'];
+            
+                if (isset($_POST['id_trabajador']) && !empty($_POST['id_trabajador'])) {
+                    $id_trabajador = $_POST['id_trabajador'];
+                
+                    if (isset($_POST['nombre']) && !empty($_POST['nombre'])) {
+                        $nombre = $_POST['nombre'];
+                    
+                        if (isset($_POST['id_tipo_pago']) && !empty($_POST['id_tipo_pago'])) {
+                            $id_tipo_pago = $_POST['id_tipo_pago'];
+                        
+                            if (isset($_POST['monto']) && !empty($_POST['monto'])) {
+                                $monto = $_POST['monto'];
+                            
+                                $sql = "INSERT INTO ventas (id_cliente, id_trabajador, nombre, id_tipo_pago, monto) VALUES ('$id_cliente', '$id_trabajador', '$nombre', '$id_tipo_pago', '$monto') ;";
+                                $resultado = mysqli_query($conexion, $sql);
+
+                            }
+                        }
+                    }
+                }
+            }
+        } elseif ($form_id == 'form2') {
+            if (isset($_POST['id_venta']) && !empty($_POST['id_venta'])) {
+                $id_venta = $_POST['id_venta'];
+
+                $sql = "DELETE FROM ventas WHERE id_venta = '$id_venta';";
+                $resultado = mysqli_query($conexion, $sql);
+            }
+        }
+    }
+}
+
+
+/* if (isset($_GET['form_id'])) {
     $form_id = $_GET['form_id'];
 
     if ($form_id == 'form1') {
@@ -28,9 +69,7 @@ if (isset($_GET['form_id'])) {
 } else {
     echo "No se envió ningún formulario.";
 }
-
-
-
+*/
 
 
 ?>
@@ -93,7 +132,7 @@ if (isset($_GET['form_id'])) {
                                 </div>  
 
                                 <hr>
-                              
+
                                 <form action="" method="POST">
                                     <input type="hidden" name="form_id" value="form1">
                                   <div class="form-group">
@@ -123,11 +162,11 @@ if (isset($_GET['form_id'])) {
 
                                   <div class="form-group">
                                     <label for="monto" class="col-form-label">Monto:</label>
-                                    <input type="number" class="form-control" id="monto" name="monto" min="50" required>
+                                    <input type="number" class="form-control" id="monto" name="monto" min="50" step="0.05" required>
                                   </div>
 
                                   <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="reset" class="btn btn-secondary" data-bs-reset="modal">Resetear</button>
                                     <button type="submit" class="btn btn-primary">Aceptar</button>
                                     </div>
                                 </form>
@@ -135,7 +174,44 @@ if (isset($_GET['form_id'])) {
                             </div>
                           </div>
                         </div>
-                    </div>                   
+                    </div>   
+                    
+                    <div>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                          Eliminar Venta
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-body">
+
+                                <div class="content-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Venta</h1>
+                                </div>  
+
+                                <hr>
+
+                                <form action="" method="POST">
+                                    <input type="hidden" name="form_id" value="form2">
+                                  <div class="form-group">
+                                    <label for="id_cliente" >ID Venta: </label>
+                                    <input type="text" class="form-control" id="id_venta" name="id_venta" required>
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <button type="reset" class="btn btn-secondary" data-bs-reset="modal">Resetear</button>
+                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                    </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
 
@@ -159,7 +235,7 @@ if (isset($_GET['form_id'])) {
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT v.nombre AS nombre, v.id_venta AS id, tp.nombre AS tipo, v.monto AS monto 
+                            $query = "SELECT v.nombre AS nombre, v.id_venta AS id, tp.nombre AS tipo, v.monto AS monto, v.fecha AS fecha
                                         FROM ventas AS v, tipo_pago AS tp
                                         WHERE v.id_tipo_pago = tp.id
                                         ORDER BY id DESC";
@@ -170,6 +246,7 @@ if (isset($_GET['form_id'])) {
                                         <td>" . $row['nombre'] . "</td>
                                         <td>" . $row['tipo'] . "</td>
                                         <td>" . $row['monto'] . " €</td>
+                                        <td>" . $row['fecha'] . " €</td>
                                     </tr>";
                             }
                         ?>

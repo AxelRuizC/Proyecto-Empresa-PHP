@@ -3,7 +3,7 @@
 session_start();
 include('conexion.php');
 
-$verificado = $_SESSION["verificado"];
+@$verificado = $_SESSION["verificado"];
 
 if (!$verificado) {
     die("<h1> Acceso no permitido, debes iniciar sesion primero </h1>");
@@ -22,6 +22,7 @@ $nombre = $_SESSION["nombre"];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     </head>
 <body>
@@ -29,7 +30,7 @@ $nombre = $_SESSION["nombre"];
     <div class="contenedor">
 
         <aside class="sidebar">
-            <img src="src/logo.png" alt="logo de la empresa" class="logo-empresa">
+            <img src="src/logo.png" alt="Global Inc. Logo" class="logo-empresa">
             <h2>Global Inc.</h2>
             <ul>
                 <li><i class="ri-dashboard-line"></i><a href="inicioNormal.php"> Dashboard</a></li>
