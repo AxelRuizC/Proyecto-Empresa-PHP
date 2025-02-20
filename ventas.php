@@ -13,7 +13,7 @@ if (!$verificado) {
 $nombre = $_SESSION["nombre"];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introducir.php por llamada POST
-    
+    echo "Estoy dentro de post";
     if (isset($_POST['form_id'])) {
         $form_id = $_POST['form_id'];
 
@@ -47,9 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
 
                 $sql = "DELETE FROM ventas WHERE id_venta = '$id_venta';";
                 $resultado = mysqli_query($conexion, $sql);
+                
+                $sql = "ALTER TABLE ventas AUTO_INCREMENT = 1;";
+                $resultado = mysqli_query($conexion, $sql);
             }
         }
     }
+
+    ?>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="refresh"
+    content="0.2;URL=?">
+    <?php
 }
 
 
@@ -73,6 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
 
 
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -114,15 +125,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
             </header>
 
             <section class="stats">
-                <div class="acciones">    
+                <div class="acciones">   
+                
+                    <!-- Agregar Venta -->
+                
                     <div>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarModal">
                           Agregar Venta
                         </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <!-- Pop up -->
+
+                        <div class="modal fade" id="AgregarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-body">
@@ -132,6 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                                 </div>  
 
                                 <hr>
+
+                                <!-- Formulario -->
 
                                 <form action="" method="POST">
                                     <input type="hidden" name="form_id" value="form1">
@@ -167,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
 
                                   <div class="modal-footer">
                                     <button type="reset" class="btn btn-secondary" data-bs-reset="modal">Resetear</button>
-                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                    <button type="submit" class="btn btn-primary" data-bs-reset="modal">Aceptar</button>
                                     </div>
                                 </form>
                               </div>
@@ -176,14 +193,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                         </div>
                     </div>   
                     
+                    <!-- Eliminar Venta -->
+
                     <div>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EliminarModal">
                           Eliminar Venta
                         </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <!-- Pop up -->
+
+                        <div class="modal fade" id="EliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-body">
@@ -193,6 +213,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                                 </div>  
 
                                 <hr>
+
+                                <!-- Formulario -->
 
                                 <form action="" method="POST">
                                     <input type="hidden" name="form_id" value="form2">
@@ -215,8 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                 </div>
             </section>
 
-            
-
+            <!-- Ventas Principal -->
 
             <section class="orders">
                 <h2>Ventas Totales: <?php
@@ -246,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                                         <td>" . $row['nombre'] . "</td>
                                         <td>" . $row['tipo'] . "</td>
                                         <td>" . $row['monto'] . " €</td>
-                                        <td>" . $row['fecha'] . " €</td>
+                                        <td>" . $row['fecha'] . "</td>
                                     </tr>";
                             }
                         ?>
