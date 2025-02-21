@@ -3,7 +3,7 @@
 $servidor = "localhost:3306"; // Nombre del servidor (por defecto localhost)
 $usuario = "root";       // Usuario (por defecto root en XAMPP)
 $contrasena = "";        // Contraseña (por defecto vacío en XAMPP)
-$nombre_base_datos = "empresa"; // Nombre de la base de datos
+$nombre_base_datos = "global_inc"; // Nombre de la base de datos
 
 // Establecer la conexión
 $conexion = mysqli_connect($servidor, $usuario, $contrasena, $nombre_base_datos);

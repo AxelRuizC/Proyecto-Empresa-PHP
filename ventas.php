@@ -10,30 +10,28 @@ if (!$verificado) {
     die();
 }
 
-$nombre = $_SESSION["nombre"];
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introducir.php por llamada POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
     echo "Estoy dentro de post";
     if (isset($_POST['form_id'])) {
         $form_id = $_POST['form_id'];
 
         if ($form_id == 'form1') {
-            if (isset($_POST['id_cliente']) && !empty($_POST['id_cliente'])) {
-                $id_cliente = $_POST['id_cliente'];
+            if (isset($_POST['dni_cliente']) && !empty($_POST['dni_cliente'])) {
+                $dni_cliente = $_POST['dni_cliente'];
             
-                if (isset($_POST['id_trabajador']) && !empty($_POST['id_trabajador'])) {
-                    $id_trabajador = $_POST['id_trabajador'];
+                if (isset($_POST['cod_trabajador']) && !empty($_POST['cod_trabajador'])) {
+                    $cod_trabajador = $_POST['cod_trabajador'];
                 
-                    if (isset($_POST['nombre']) && !empty($_POST['nombre'])) {
-                        $nombre = $_POST['nombre'];
+                    if (isset($_POST['cod_producto']) && !empty($_POST['cod_producto'])) {
+                        $cod_producto = $_POST['cod_producto'];
                     
-                        if (isset($_POST['id_tipo_pago']) && !empty($_POST['id_tipo_pago'])) {
-                            $id_tipo_pago = $_POST['id_tipo_pago'];
+                        if (isset($_POST['cod_tipo_pago']) && !empty($_POST['cod_tipo_pago'])) {
+                            $cod_tipo_pago = $_POST['cod_tipo_pago'];
                         
                             if (isset($_POST['monto']) && !empty($_POST['monto'])) {
                                 $monto = $_POST['monto'];
                             
-                                $sql = "INSERT INTO ventas (id_cliente, id_trabajador, nombre, id_tipo_pago, monto) VALUES ('$id_cliente', '$id_trabajador', '$nombre', '$id_tipo_pago', '$monto') ;";
+                                $sql = "INSERT INTO ventas (dni_cliente, cod_trabajador, cod_producto, cod_tipo_pago, monto) VALUES ('$dni_cliente', '$cod_trabajador', '$cod_producto', '$cod_tipo_pago', '$monto') ;";
                                 $resultado = mysqli_query($conexion, $sql);
 
                             }
@@ -42,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                 }
             }
         } elseif ($form_id == 'form2') {
-            if (isset($_POST['id_venta']) && !empty($_POST['id_venta'])) {
-                $id_venta = $_POST['id_venta'];
+            if (isset($_POST['cod_venta']) && !empty($_POST['cod_venta'])) {
+                $cod_venta = $_POST['cod_venta'];
 
-                $sql = "DELETE FROM ventas WHERE id_venta = '$id_venta';";
+                $sql = "DELETE FROM ventas WHERE cod = '$cod_venta';";
                 $resultado = mysqli_query($conexion, $sql);
                 
                 $sql = "ALTER TABLE ventas AUTO_INCREMENT = 1;";
@@ -61,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
     <?php
 }
 
+@$administrador = $_SESSION["admin"];
 
 /* if (isset($_GET['form_id'])) {
     $form_id = $_GET['form_id'];
@@ -104,7 +103,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
             <img src="src/logo.png" alt="logo de la empresa" class="logo-empresa">
             <h2>Global Inc.</h2>
             <ul>
-                <li><i class="ri-dashboard-line"></i><a href="inicioNormal.php"> Dashboard</a></li>
+                <li><i class="ri-dashboard-line"></i><a 
+                <?php 
+                if($administrador == 1){
+                    echo 'href="inicioAdmin.php"';
+                } else{
+                    echo 'href="inicioNormal.php"';
+                }
+                ?>> Dashboard</a></li>
+                <?php 
+                if($administrador == 1){
+                    echo '<li><i class="ri-id-card-line"></i><a href="trabajadores.php"> Trabajadores</a></li>';
+                }
+                ?>
                 <li><i class="ri-user-line"></i><a href="clientes.php"> Clientes</a></li>
                 <li><i class="ri-cash-line"></i><a href="ventas.php"> Ventas</a></li>
             </ul>
@@ -153,23 +164,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                                 <form action="" method="POST">
                                     <input type="hidden" name="form_id" value="form1">
                                   <div class="form-group">
-                                    <label for="id_cliente" >ID Cliente: </label>
-                                    <input type="text" class="form-control" id="id_cliente" name="id_cliente" required>
+                                    <label for="dni_cliente" >DNI Cliente: </label>
+                                    <input type="text" class="form-control" id="dni_cliente" name="dni_cliente" required>
                                   </div>
 
                                   <div class="form-group">
-                                    <label for="id_trabajador" >ID Trabajador: </label>
-                                    <input type="text" class="form-control" id="id_trabajador" name="id_trabajador" required>
+                                    <label for="cod_trabajador" >ID Trabajador: </label>
+                                    <input type="text" class="form-control" id="cod_trabajador" name="cod_trabajador" required>
                                   </div>
 
                                   <div class="form-group">
-                                    <label for="nombre" ">Producto: </label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    <label for="cod_producto" >Producto: </label>
+                                    <select id="cod_producto" name="cod_producto" required>
+                                        <option value="" disabled selected>Selecciona una opcion:</option>
+                                        <option value="1">Ordenador portátil</option>
+                                        <option value="2">Teléfono móvil</option>
+                                        <option value="3">Tablet</option>
+                                        <option value="4">Auriculares Bluetooth</option>
+                                    </select>
                                   </div>
 
                                   <div class="form-group">
-                                    <label for="id_tipo_pago" >Tipo de Pago: </label>
-                                    <select id="id_tipo_pago" name="id_tipo_pago" required>
+                                    <label for="cod_tipo_pago" >Tipo de Pago: </label>
+                                    <select id="cod_tipo_pago" name="cod_tipo_pago" required>
                                         <option value="" disabled selected>Selecciona una opcion:</option>
                                         <option value="1">Transferencia</option>
                                         <option value="2">Efectivo</option>
@@ -219,8 +236,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                                 <form action="" method="POST">
                                     <input type="hidden" name="form_id" value="form2">
                                   <div class="form-group">
-                                    <label for="id_cliente" >ID Venta: </label>
-                                    <input type="text" class="form-control" id="id_venta" name="id_venta" required>
+                                    <label for="cod_venta" >ID Venta: </label>
+                                    <input type="text" class="form-control" id="cod_venta" name="cod_venta" required>
                                   </div>
 
                                   <div class="modal-footer">
@@ -253,12 +270,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Compruebo que entrado en introduc
                         <th>Producto</th>
                         <th>Pago</th>
                         <th>Monto</th>
+                        <th>Fecha de Venta</th>
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT v.nombre AS nombre, v.id_venta AS id, tp.nombre AS tipo, v.monto AS monto, v.fecha AS fecha
-                                        FROM ventas AS v, tipo_pago AS tp
-                                        WHERE v.id_tipo_pago = tp.id
+                            $query = "SELECT p.descripcion AS nombre, v.cod AS id, tp.descripcion AS tipo, v.monto AS monto, v.fecha_venta AS fecha
+                                        FROM ventas AS v, tipo_pago AS tp, productos AS p
+                                        WHERE v.cod_tipo_pago = tp.cod
+                                        AND v.cod_producto = p.cod
                                         ORDER BY id DESC";
                             $resultado = mysqli_query($conexion, $query);
                             while ($row = mysqli_fetch_assoc($resultado)){

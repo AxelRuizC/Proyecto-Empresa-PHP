@@ -2,7 +2,6 @@
 
 session_start();
 include("conexion.php");
-error_reporting(0);
 
 $error = "";
 $verificado = "FALSE";
@@ -11,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = mysqli_real_escape_string($conexion, $_POST["user"]);
     $passwd = mysqli_real_escape_string($conexion, $_POST["passwd"]);
 
-    $query = "SELECT passwd FROM cuentas WHERE user = '$user'";
+    $query = "SELECT passwd FROM correocorp WHERE user = '$user'";
     $resultado = mysqli_query($conexion, $query);
 
     if ($resultado && mysqli_num_rows($resultado) > 0) {
@@ -20,19 +19,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($passwd == $passwdTemp) {
 
-            $query = "SELECT t.* FROM cuentas AS c, trabajadores AS t 
-                        WHERE c.id_trabajador = t.id AND c.user = '$user'";
+            $query = "SELECT t.* 
+                        FROM correocorp AS c, trabajadores AS t 
+                        WHERE c.cod_trabajador = t.cod AND c.user = '$user'";
             $resultado = mysqli_query($conexion, $query);
             $datos = mysqli_fetch_assoc($resultado);
             $verificado = "TRUE";
 
             $_SESSION["nombre"] = $datos["nombre"];
+            $_SESSION["admin"] = $datos["admin"];
             $_SESSION["verificado"] = $verificado;
 
-            if($datos["id_tipo"] == 1){
+            if($datos["admin"] == 1){
                 header("Location: inicioAdmin.php");
                 die();
-            } elseif($datos["id_tipo"] == 0){
+            } elseif($datos["admin"] == 0){
                 header("Location: inicioNormal.php");
                 die();
             } else{
