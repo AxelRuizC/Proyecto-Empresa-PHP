@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             if (isset($_POST['zona']) && !empty($_POST['zona'])) {
                                 $zona = $_POST['zona'];
 
-                            $sql = "INSERT INTO clientes (dni, nombre, apellido, telefono, zona) VALUES ('$dni', '$nombre', '$apellido', '$telefono', $zona) ;";
+                            $sql = "INSERT INTO trabajadores (dni, nombre, apellido, admin) VALUES ('$dni', '$nombre', '$apellido', '$admin') ;";
                             $resultado = mysqli_query($conexion, $sql);
                          
                             }
@@ -39,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         } elseif ($form_id == 'form2') {
-            if (isset($_POST['dni']) && !empty($_POST['dni'])) {
-                $dni = $_POST['dni'];
+            if (isset($_POST['cod']) && !empty($_POST['cod'])) {
+                $dni = $_POST['cod'];
 
-                $sql = "DELETE FROM clientes WHERE dni = '$dni';";
+                $sql = "DELETE FROM trabajadores WHERE cod = '$cod';";
                 $resultado = mysqli_query($conexion, $sql);
                 
                 $sql = "ALTER TABLE ventas AUTO_INCREMENT = 1;";
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <main class="contenido-principal">
             <header>
-                <h1>Area Clientes</h1>
+                <h1>Area Trabajadores</h1>
                 <p>
                     <?php 
                         $query = "SELECT DATE_FORMAT(CURRENT_DATE, '%d-%m-%Y') AS dia_actual;";
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                               <div class="modal-body">
 
                                 <div class="content-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Cliente</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Trabajador</h1>
                                 </div>  
 
                                 <hr>
@@ -178,18 +178,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                   </div>
 
                                   <div class="form-group">
-                                    <label for="telefono" ">Telefono: </label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" required>
-                                  </div>
-
-                                  <div class="form-group">
-                                    <label for="zona" >Zona: </label>
-                                    <select id="zona" name="zona" required>
+                                    <label for="admin" >¿Sera Admin?: </label>
+                                    <select id="admin" name="admin" required>
                                         <option value="" disabled selected>Selecciona una opcion:</option>
-                                        <option value="1">Sevilla</option>
-                                        <option value="2">Córdoba</option>
-                                        <option value="3">Granada</option>
-                                        <option value="4">Huelva</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Sí</option>
                                     </select>
                                   </div>
 
@@ -220,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                               <div class="modal-body">
 
                                 <div class="content-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Cliente</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Trabajador</h1>
                                 </div>  
 
                                 <hr>
@@ -230,8 +223,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <form action="" method="POST">
                                     <input type="hidden" name="form_id" value="form2">
                                   <div class="form-group">
-                                    <label for="dni" >DNI: </label>
-                                    <input type="text" class="form-control" id="dni" name="dni" required>
+                                    <label for="cod" >Código del Trabajador: </label>
+                                    <input type="text" class="form-control" id="cod" name="cod" required>
                                   </div>
 
                                   <div class="modal-footer">
@@ -252,34 +245,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <section class="orders">
                 <h2>Clientes Totales: <?php
-                            $query = "SELECT COUNT(*) AS clientes_totales FROM clientes;";
+                            $query = "SELECT COUNT(*) AS trabajadores_totales FROM trabajadores;";
                             $resultado = mysqli_query($conexion, $query);
                             $datos = mysqli_fetch_assoc($resultado);
 
-                            echo $datos["clientes_totales"] 
+                            echo $datos["trabajadores_totales"] 
                         ?></h2>
                 <table>
                     <thead>
+                        <th>Código</th>
                         <th>DNI</th>
                         <th>Nombre</th>
-                        <th>Telefono</th>
-                        <th>Fecha de Registro</th>
-                        <th>Zona</th>
+                        <th>Tipo</th>
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT c.dni AS dni, CONCAT(c.nombre,' ',c.apellido) AS nombre, c.telefono AS telefono, c.fecha_alta AS fecha, z.descripcion AS zona
-                                        FROM clientes AS c, zonas AS z
-                                        WHERE c.zona = z.cod
-                                        ORDER BY nombre ASC";
+                            $query = "SELECT t.cod AS cod, t.dni AS dni, CONCAT(t.nombre,' ',t.apellido) AS nombre, t.admin AS tipo
+                                        FROM trabajadores AS t
+                                        ORDER BY cod ASC";
                             $resultado = mysqli_query($conexion, $query);
                             while ($row = mysqli_fetch_assoc($resultado)){
                                 echo "<tr>
+                                        <td>" . $row['cod'] . "</td>
                                         <td>" . $row['dni'] . "</td>
                                         <td>" . $row['nombre'] . "</td>
-                                        <td>" . $row['telefono'] . "</td>
-                                        <td>" . $row['fecha'] . "</td>
-                                        <td>" . $row['zona'] . "</td>
+                                        <td>"; 
+                                        if($row['tipo'] == 1){
+                                            echo "Administrador";
+                                        } else{
+                                            echo "Normal";
+                                        }"</td>
                                     </tr>";
                             }
                         ?>

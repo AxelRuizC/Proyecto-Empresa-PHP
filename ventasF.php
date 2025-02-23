@@ -10,74 +10,7 @@ if (!$verificado) {
     die();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
-    if (isset($_POST['form_id'])) {
-        $form_id = $_POST['form_id'];
-
-        if ($form_id == 'form1') {
-            if (isset($_POST['dni_cliente']) && !empty($_POST['dni_cliente'])) {
-                $dni_cliente = $_POST['dni_cliente'];
-            
-                if (isset($_POST['cod_trabajador']) && !empty($_POST['cod_trabajador'])) {
-                    $cod_trabajador = $_POST['cod_trabajador'];
-                
-                    if (isset($_POST['cod_producto']) && !empty($_POST['cod_producto'])) {
-                        $cod_producto = $_POST['cod_producto'];
-                    
-                        if (isset($_POST['cod_tipo_pago']) && !empty($_POST['cod_tipo_pago'])) {
-                            $cod_tipo_pago = $_POST['cod_tipo_pago'];
-                        
-                            if (isset($_POST['monto']) && !empty($_POST['monto'])) {
-                                $monto = $_POST['monto'];
-                            
-                                $sql = "INSERT INTO ventas (dni_cliente, cod_trabajador, cod_producto, cod_tipo_pago, monto) VALUES ('$dni_cliente', '$cod_trabajador', '$cod_producto', '$cod_tipo_pago', '$monto') ;";
-                                $resultado = mysqli_query($conexion, $sql);
-
-                            }
-                        }
-                    }
-                }
-            }
-        } elseif ($form_id == 'form2') {
-            if (isset($_POST['cod_venta']) && !empty($_POST['cod_venta'])) {
-                $cod_venta = $_POST['cod_venta'];
-
-                $sql = "DELETE FROM ventas WHERE cod = '$cod_venta';";
-                $resultado = mysqli_query($conexion, $sql);
-                
-                $sql = "ALTER TABLE ventas AUTO_INCREMENT = 1;";
-                $resultado = mysqli_query($conexion, $sql);
-            }
-        }
-    }
-
-    ?>
-    <meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="refresh"
-    content="0.2;URL=?">
-    <?php
-}
-
 @$administrador = $_SESSION["admin"];
-
-/* if (isset($_GET['form_id'])) {
-    $form_id = $_GET['form_id'];
-
-    if ($form_id == 'form1') {
-        // Procesar el formulario 1
-        echo "Formulario 1 enviado: " . htmlspecialchars($_GET['fname']) . " " . htmlspecialchars($_GET['lname']);
-    } elseif ($form_id == 'form2') {
-        // Procesar el formulario 2
-        echo "Formulario 2 enviado: " . htmlspecialchars($_GET['email']);
-    } elseif ($form_id == 'form3') {
-        // Procesar el formulario 3
-        echo "Formulario 3 enviado: " . htmlspecialchars($_GET['age']);
-    }
-} else {
-    echo "No se envió ningún formulario.";
-}
-*/
-
 
 ?>
 
@@ -329,13 +262,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Ventas Principal -->
 
             <section class="orders">
-                <h2>Ventas Totales: <?php
-                            $query = "SELECT COUNT(*) AS ventas_totales FROM ventas;";
-                            $resultado = mysqli_query($conexion, $query);
-                            $datos = mysqli_fetch_assoc($resultado);
-
-                            echo $datos["ventas_totales"] 
-                        ?></h2>
                 <table>
                     <thead>
                         <th>ID Venta</th>
@@ -346,20 +272,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT p.descripcion AS nombre, v.cod AS id, tp.descripcion AS tipo, v.monto AS monto, v.fecha_venta AS fecha
-                                        FROM ventas AS v, tipo_pago AS tp, productos AS p
+                            if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
+                              
+                              $condiciones = [];
+                              $parametros = [];
+
+                              if (isset($_POST['cod']) && !empty($_POST['cod'])) {
+                                  $condiciones[] = "cod";
+                                  $parametros[] = $_POST['cod'];
+                              }
+                              if (isset($_POST['dni_cliente']) && !empty($_POST['dni_cliente'])) {
+                                  $condiciones[] = "dni_cliente";
+                                  $parametros[] = $_POST['dni_cliente'];
+                              }
+                              if (isset($_POST['cod_trabajador']) && !empty($_POST['cod_trabajador'])) {
+                                  $condiciones[] = "cod_trabajador";
+                                  $parametros[] = $_POST['cod_trabajador'];
+                              }
+                              if (isset($_POST['cod_producto'])) {
+                                  $condiciones[] = "cod_producto";
+                                  $parametros[] = $_POST['cod_producto'];
+                              }
+                              if (isset($_POST['cod_tipo_pago'] )) {
+                                  $condiciones[] = "cod_tipo_pago";
+                                  $parametros[] = $_POST['cod_tipo_pago'];
+                              }
+                            }
+
+                            for($i=0, $size=count($condiciones); $i < $size; $i++){
+                              $query = "SELECT p.descripcion AS nombre, v.cod AS id, tp.descripcion AS tipo, v.monto AS monto, v.fecha_venta AS fecha
+                                        FROM ventas AS v, tipo_pago AS tp, productos AS p, clientes AS c, trabajadores AS t
                                         WHERE v.cod_tipo_pago = tp.cod
                                         AND v.cod_producto = p.cod
-                                        ORDER BY id DESC";
-                            $resultado = mysqli_query($conexion, $query);
-                            while ($row = mysqli_fetch_assoc($resultado)){
-                                echo "<tr>
-                                        <td>" . $row['id'] . "</td>
-                                        <td>" . $row['nombre'] . "</td>
-                                        <td>" . $row['tipo'] . "</td>
-                                        <td>" . $row['monto'] . " €</td>
-                                        <td>" . $row['fecha'] . "</td>
-                                    </tr>";
+                                        AND v.dni_cliente = c.dni
+                                        AND v.cod_trabajador = t.cod
+                                        AND v.$condiciones[$i] LIKE '$parametros[$i]';";
+
+                              $resultado = mysqli_query($conexion, $query);
+
+                              while ($row = mysqli_fetch_assoc($resultado)){
+                                  echo "<tr>
+                                          <td>" . $row['id'] . "</td>
+                                          <td>" . $row['nombre'] . "</td>
+                                          <td>" . $row['tipo'] . "</td>
+                                          <td>" . $row['monto'] . " €</td>
+                                          <td>" . $row['fecha'] . "</td>
+                                      </tr>";
+                              }
                             }
                         ?>
                     </tbody>
