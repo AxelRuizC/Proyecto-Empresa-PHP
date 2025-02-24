@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Ventas Principal -->
 
             <section class="orders">
-                <h2>Clientes Totales: <?php
+                <h2>Trabajadores Totales: <?php
                             $query = "SELECT COUNT(*) AS trabajadores_totales FROM trabajadores;";
                             $resultado = mysqli_query($conexion, $query);
                             $datos = mysqli_fetch_assoc($resultado);

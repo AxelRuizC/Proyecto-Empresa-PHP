@@ -60,24 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 @$administrador = $_SESSION["admin"];
 
-/* if (isset($_GET['form_id'])) {
-    $form_id = $_GET['form_id'];
-
-    if ($form_id == 'form1') {
-        // Procesar el formulario 1
-        echo "Formulario 1 enviado: " . htmlspecialchars($_GET['fname']) . " " . htmlspecialchars($_GET['lname']);
-    } elseif ($form_id == 'form2') {
-        // Procesar el formulario 2
-        echo "Formulario 2 enviado: " . htmlspecialchars($_GET['email']);
-    } elseif ($form_id == 'form3') {
-        // Procesar el formulario 3
-        echo "Formulario 3 enviado: " . htmlspecialchars($_GET['age']);
-    }
-} else {
-    echo "No se envió ningún formulario.";
-}
-*/
-
 
 ?>
 
@@ -306,8 +288,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <label for="cod_tipo_pago" >Tipo de Pago: </label>
                                     <select id="cod_tipo_pago" name="cod_tipo_pago">
                                         <option value="" disabled selected>Selecciona una opcion:</option>
-                                        <option value="2">Transferencia</option>
                                         <option value="1">Efectivo</option>
+                                        <option value="2">Transferencia</option>
                                         <option value="3">Tarjeta</option>
                                     </select>
                                   </div>
