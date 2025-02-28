@@ -35,6 +35,7 @@ $nombre = $_SESSION["nombre"];
             <ul>
                 <li><i class="ri-dashboard-line"></i><a href="inicioNormal.php"> Dashboard</a></li>
                 <li><i class="ri-id-card-line"></i><a href="trabajadores.php"> Trabajadores</a></li>
+                <li><i class="ri-store-line"></i><a href="productos.php"> Productos</a></li>
                 <li><i class="ri-user-line"></i><a href="clientes.php"> Clientes</a></li>
                 <li><i class="ri-cash-line"></i><a href="ventas.php"> Ventas</a></li>
             </ul>

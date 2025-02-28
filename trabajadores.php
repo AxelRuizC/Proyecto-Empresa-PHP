@@ -113,7 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php 
                 if($administrador == 1){
                     echo '<li><i class="ri-id-card-line"></i><a href="trabajadores.php"> Trabajadores</a></li>';
+                    echo '<li><i class="ri-store-line"></i><a href="productos.php"> Productos</a></li>';
                 }
+                
                 ?>
                 <li><i class="ri-user-line"></i><a href="clientes.php"> Clientes</a></li>
                 <li><i class="ri-cash-line"></i><a href="ventas.php"> Ventas</a></li>

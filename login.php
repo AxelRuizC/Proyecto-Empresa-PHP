@@ -16,8 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($resultado && mysqli_num_rows($resultado) > 0) {
         $datos = mysqli_fetch_assoc($resultado);
         $passwdTemp = $datos["passwd"];
+        $passwdMD5 = md5($passwd);
 
-        if ($passwd == $passwdTemp) {
+        if ($passwdMD5 == $passwdTemp) {
 
             $query = "SELECT t.* 
                         FROM correocorp AS c, trabajadores AS t 
@@ -28,7 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $_SESSION["nombre"] = $datos["nombre"];
             $_SESSION["admin"] = $datos["admin"];
+            $_SESSION['user'] = $user;
             $_SESSION["verificado"] = $verificado;
+
+            if(isset($_POST['recordar'])) {
+                setcookie('user', $user, time() + (86400 * 30));
+            }
 
             if($datos["admin"] == 1){
                 header("Location: inicioAdmin.php");
@@ -46,6 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $error = "Usuario no encontrado.";
     }
+}
+
+if(isset($_COOKIE['user'])){
+    $_SESSION['user'] = $_COOKIE['user'];
 }
 
 ?>
@@ -75,8 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>  
 
             <div class="olvido-contra">
-                <label><input type="checkbox"> Recuerdame</label>
-                <a href="">¿Olvidaste tu contraseña?</a>
+                <label><input type="checkbox" name="recordar"> Mantener mi sesion abierta</label>
             </div>
 
             <button type="submit" class="btn">Login</button>

@@ -46,6 +46,7 @@ if (!$verificado) {
                 <?php 
                 if($administrador == 1){
                     echo '<li><i class="ri-id-card-line"></i><a href="trabajadores.php"> Trabajadores</a></li>';
+                    echo '<li><i class="ri-store-line"></i><a href="productos.php"> Productos</a></li>';
                 }
                 ?>
                 <li><i class="ri-user-line"></i><a href="clientes.php"> Clientes</a></li>
@@ -109,10 +110,16 @@ if (!$verificado) {
                                     <label for="cod_producto" >Producto: </label>
                                     <select id="cod_producto" name="cod_producto" required>
                                         <option value="" disabled selected>Selecciona una opcion:</option>
-                                        <option value="1">Ordenador portátil</option>
-                                        <option value="2">Teléfono móvil</option>
-                                        <option value="3">Tablet</option>
-                                        <option value="4">Auriculares Bluetooth</option>
+                                        <?php
+                                        $query = "SELECT p.cod AS codigo, p.descripcion AS nombre
+                                                  FROM productos AS p
+                                                  WHERE p.cantidad > 0
+                                                  ORDER BY cod ASC;";
+                                        $resultado = mysqli_query($conexion, $query);
+                                        while ($row = mysqli_fetch_assoc($resultado)){
+                                          echo '<option value="' . $row['codigo'] . '">' . $row['nombre'] . '</option>';
+                                        }
+                                        ?>
                                     </select>
                                   </div>
 
@@ -120,9 +127,15 @@ if (!$verificado) {
                                     <label for="cod_tipo_pago" >Tipo de Pago: </label>
                                     <select id="cod_tipo_pago" name="cod_tipo_pago" required>
                                         <option value="" disabled selected>Selecciona una opcion:</option>
-                                        <option value="1">Transferencia</option>
-                                        <option value="2">Efectivo</option>
-                                        <option value="3">Tarjeta</option>
+                                        <?php
+                                        $query = "SELECT tp.cod AS codigo, tp.descripcion AS nombre
+                                                  FROM tipo_pago AS tp
+                                                  ORDER BY cod ASC;";
+                                        $resultado = mysqli_query($conexion, $query);
+                                        while ($row = mysqli_fetch_assoc($resultado)){
+                                          echo '<option value="' . $row['codigo'] . '">' . $row['nombre'] . '</option>';
+                                        }
+                                      ?>
                                     </select>
                                   </div>
 
@@ -228,10 +241,16 @@ if (!$verificado) {
                                     <label for="cod_producto" >Producto: </label>
                                     <select id="cod_producto" name="cod_producto">
                                         <option value="" disabled selected>Selecciona una opcion:</option>
-                                        <option value="1">Ordenador portátil</option>
-                                        <option value="2">Teléfono móvil</option>
-                                        <option value="3">Tablet</option>
-                                        <option value="4">Auriculares Bluetooth</option>
+                                        <?php
+                                        $query = "SELECT DISTINCT(v.cod_producto) AS codigo, p.descripcion AS nombre
+                                                  FROM ventas AS v, productos AS p
+                                                  WHERE v.cod_producto = p.cod
+                                                  ORDER BY v.cod_producto ASC;";
+                                        $resultado = mysqli_query($conexion, $query);
+                                        while ($row = mysqli_fetch_assoc($resultado)){
+                                          echo '<option value="' . $row['codigo'] . '">' . $row['nombre'] . '</option>';
+                                        }
+                                        ?>
                                     </select>
                                   </div>
 
@@ -239,9 +258,16 @@ if (!$verificado) {
                                     <label for="cod_tipo_pago" >Tipo de Pago: </label>
                                     <select id="cod_tipo_pago" name="cod_tipo_pago">
                                         <option value="" disabled selected>Selecciona una opcion:</option>
-                                        <option value="2">Transferencia</option>
-                                        <option value="1">Efectivo</option>
-                                        <option value="3">Tarjeta</option>
+                                        <?php
+                                        $query = "SELECT DISTINCT(v.cod_tipo_pago) AS codigo, tp.descripcion AS nombre
+                                                  FROM ventas AS v, tipo_pago AS tp
+                                                  WHERE v.cod_tipo_pago = tp.cod
+                                                  ORDER BY v.cod_tipo_pago ASC;";
+                                        $resultado = mysqli_query($conexion, $query);
+                                        while ($row = mysqli_fetch_assoc($resultado)){
+                                          echo '<option value="' . $row['codigo'] . '">' . $row['nombre'] . '</option>';
+                                        }
+                                        ?>
                                     </select>
                                   </div>
 
