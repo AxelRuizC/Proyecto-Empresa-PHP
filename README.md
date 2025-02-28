@@ -193,9 +193,8 @@ if (!mysqli_select_db($conexion, $nombre_base_datos)) {
 ?>
 ```
 
-### ⚠️ Advertencia
+### ⚠️ Advertencias
 - Este archivo usa `mysqli_connect()` para establecer la conexión.
-- La contraseña está vacía porque es la configuración predeterminada en XAMPP.
 - Si usas otro entorno, revisa que el usuario y contraseña sean correctos.
 
 
