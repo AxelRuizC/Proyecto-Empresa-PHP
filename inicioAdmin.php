@@ -6,7 +6,8 @@ include('conexion.php');
 @$verificado = $_SESSION["verificado"];
 
 if (!$verificado) {
-    die("<h1> Acceso no permitido, debes iniciar sesion primero </h1>");
+    header("Location: login.php");
+    die();
 }
 
 $nombre = $_SESSION["nombre"];
@@ -38,6 +39,7 @@ $nombre = $_SESSION["nombre"];
                 <li><i class="ri-store-line"></i><a href="productos.php"> Productos</a></li>
                 <li><i class="ri-user-line"></i><a href="clientes.php"> Clientes</a></li>
                 <li><i class="ri-cash-line"></i><a href="ventas.php"> Ventas</a></li>
+                <li><i class="ri-shut-down-line"></i><a href="logout.php"> Cerrar Sesión</a></li>
             </ul>
         </aside>
 

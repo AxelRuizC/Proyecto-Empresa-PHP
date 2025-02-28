@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $verificado = "TRUE";
 
             $_SESSION["nombre"] = $datos["nombre"];
-            $_SESSION["admin"] = $datos["admin"];
+            $_SESSION["administer"] = $datos["administer"];
             $_SESSION['user'] = $user;
             $_SESSION["verificado"] = $verificado;
 
@@ -36,10 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 setcookie('user', $user, time() + (86400 * 30));
             }
 
-            if($datos["admin"] == 1){
+            if($datos["administer"] == 1){
                 header("Location: inicioAdmin.php");
                 die();
-            } elseif($datos["admin"] == 0){
+            } elseif($datos["administer"] == 0){
                 header("Location: inicioNormal.php");
                 die();
             } else{

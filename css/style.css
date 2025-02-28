@@ -41,6 +41,11 @@
     cursor: pointer;
 }
 
+.sidebar li:last-child {
+    position: absolute;
+    bottom: 1.5rem;
+}
+
 a {
     text-decoration: none;
     color: black;
@@ -117,15 +122,32 @@ header {
 
 .modal-content {
     width: 420px;
-    height: 700px;
+    height: 400px;
     background: #C4C1BC;
     border: 2px solid rgba(255, 255, 255, .2);
     backdrop-filter: blur(20px);
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     color: #847977;
     border-radius: 10px;
-    padding: 30px 40px;
+    padding: 15px 40px;
 }
+
+.modal-contentS{
+    height: 480px;
+}
+
+.modal-contentM{
+    height: 550px;
+}
+
+.modal-contentL{
+    height: 700px;
+}
+
+.modal-contentXL{
+    height: 800px;
+}
+
 
 .modal-footer{
     margin-top: 100px;
@@ -145,7 +167,7 @@ header {
     position: relative;
     width: 100%;
     height: 50px;
-    margin: 30px 0;
+    margin: 33px 0;
 }
 
 /* Formulario */
@@ -224,93 +246,3 @@ header {
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
-
-/* 
-
-.user-info {
-    display: flex;
-    align-items: center;
-}
-
-.profile-pic {
-    width: 40px;
-    height: 40px;
-    background: gray;
-    border-radius: 50%;
-    margin-left: 10px;
-}
-
-.hidForm {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    right: 15px;
-    border: 3px solid #e90404;
-    background: white;
-    padding: 20px;
-    width: 300px;
-}
-
-.tasks {
-    margin-top: 20px;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.task {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f8f9fa;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-}
-
-.add-task {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.add-task:hover {
-    background: #0056b3;
-}
-
-.task span {
-    color: #333;
-    flex-grow: 1; 
-}
-
-.delete-task {
-    background: #333;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.3s;
-}
-
-.delete-task:hover {
-    background: #c82333;
-}
-
-.task:hover {
-    background: #e9ecef;
-    transform: translateY(-2px);
-    transition: all 0.3s ease;
-}
-
-*/
