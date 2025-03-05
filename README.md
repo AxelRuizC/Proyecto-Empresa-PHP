@@ -390,15 +390,24 @@ Este script se encarga de **cerrar la sesión** del usuario y **redirigirlo** a 
 ## Descripción
 1. **Elimina** la variable `$_SESSION['verificado']`, que generalmente indica que el usuario estaba autenticado.
 2. **Redirige** inmediatamente a `login.php` para forzar que el usuario vuelva a autenticarse o mostrar el formulario de ingreso.
+3. **Establece** la cookie la cual nos va a servir para saber el ultimo inicio de sesion de la cuenta.
 
 ## 📜 Código
 ```php
 <?php
 session_start();
 
+
+@$userName = $_SESSION["nombre"].$_SESSION["apellido"];
+$ultimo_inicio = $_SESSION["ultimo_inicio"];
+$ultimoLogin = "ultimo_inicio_".$userName;
+$dateCookie  = $ultimo_inicio;
+setcookie($ultimoLogin, $dateCookie, time() + (86400 * 30), "/");
+
 unset($_SESSION['verificado']);
 
 header("Location: login.php");
+
 ?>
 ```
 
