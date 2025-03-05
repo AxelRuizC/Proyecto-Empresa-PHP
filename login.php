@@ -28,13 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $verificado = "TRUE";
 
             $_SESSION["nombre"] = $datos["nombre"];
+            $_SESSION["apellido"] = $datos["apellido"];
             $_SESSION["administer"] = $datos["administer"];
-            $_SESSION['user'] = $user;
             $_SESSION["verificado"] = $verificado;
-
-            if(isset($_POST['recordar'])) {
-                setcookie('user', $user, time() + (86400 * 30));
-            }
+            $_SESSION["ultimo_inicio"] = date('d-m-Y H:i:s');
 
             if($datos["administer"] == 1){
                 header("Location: inicioAdmin.php");
@@ -83,10 +80,6 @@ if(isset($_COOKIE['user'])){
                 <input type="password" name="passwd" placeholder="Contraseña" required>
                 <i class="bx bxs-lock-alt" ></i>
             </div>  
-
-            <div class="olvido-contra">
-                <label><input type="checkbox" name="recordar"> Mantener mi sesion abierta</label>
-            </div>
 
             <button type="submit" class="btn">Login</button>
 

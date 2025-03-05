@@ -77,21 +77,6 @@ body {
     font-size: 20px;
 }
 
-.contenedor .olvido-contra {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.5px;
-    margin: -15px 0 15px;
-}
-
-.olvido-contra label input {
-    accent-color: #fff;
-    text-decoration: none;
-}
-
-.olvido-contra a:hover {
-    text-decoration: underline;
-}
 
 .contenedor .btn {
     width: 100%;
