@@ -4,6 +4,8 @@ session_start();
 include('conexion.php');
 
 @$verificado = $_SESSION["verificado"];
+@$userName = $_SESSION["nombre"].$_SESSION["apellido"];
+$ultimoLogin = "ultimo_inicio_".$userName;
 
 if (!$verificado) {
     header("Location: login.php");
@@ -46,11 +48,9 @@ $nombre = $_SESSION["nombre"];
                 <h1>Bienvenid@ <?php echo htmlspecialchars($nombre); ?></h1>
                 <p>
                     <?php 
-                        $query = "SELECT DATE_FORMAT(CURRENT_DATE, '%d-%m-%Y') AS dia_actual;";
-                        $resultado = mysqli_query($conexion, $query);
-                        $datos = mysqli_fetch_assoc($resultado);
-
-                        echo $datos["dia_actual"] 
+                        if (isset($_COOKIE[$ultimoLogin])) {
+                            echo "Tu último inicio de sesión fue: " . $_COOKIE[$ultimoLogin];
+                        };
                     ?>
                 </p>
             </header>
